@@ -1,12 +1,11 @@
----
-title: "LA Asian Pop Map"
-author: "Katia Krotova"
-date: "10/13/2021"
-output: html_document
----
 
+Assignment 6: Interactive maps (1 map)
+Katia Krotova
+10/13/2021
 
-```{r, message = FALSE, warning = FALSE, echo = FALSE}
+This map shows the percentage of Asian residents in each census block in Los Angeles County, California. This map is based on the data from the 2010 Decennial Census.
+
+```{r, message = FALSE, warning = FALSE}
 
 library(leaflet)
 library(sf)
@@ -19,13 +18,13 @@ library(tidytransit)
 
 ```
  
-```{r, message = FALSE, warning = FALSE, echo = FALSE}
+```{r, message = FALSE, warning = FALSE, echo = FALSE, include=FALSE}
 
 vars2010 <- load_variables(2010, "sf1")
 
 ```
  
-```{r, message = FALSE, warning = FALSE, echo = FALSE}
+```{r, message = FALSE, warning = FALSE, echo = FALSE, include=FALSE}
 
 LA_Asian <- get_decennial(geography = "block",
                           state = "CA", county = "Los Angeles",
@@ -42,47 +41,17 @@ LA_Asian <- LA_Asian %>%
 
 
 ```
-```{r, plotting the map}
+
+```{r, message = FALSE, warning = FALSE, echo = FALSE}
 
 LA_state_plane <- "+proj=aea +lat_1=34 +lat_2=40.5 +lat_0=0 +lon_0=-120 +x_0=0 +y_0=-4000000 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"
 
-ggplot(LA_Asian) +
-  annotation_map_tile(zoomin = 0, progress = "none", type = "stamenbw") +
-  geom_sf(color = NA, aes(fill = pct_Asian), alpha = 0.7) +
-  coord_sf(crs = LA_state_plane) +
-  scale_fill_continuous(low="cornsilk", high="darkblue", 
-                       na.value=NA,
-                       name = "Percent of population\nidentifying as Asian alone",
-                       breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1),
-                       labels = c("0", "20%", "40%", "60%", "80%", "100%")) +
-  theme_void() 
-
-Asian_map1
-
-
 ```
+ 
  
 ```{r, message = FALSE, warning = FALSE, echo = FALSE}
 
 LA_Asian_palette <- colorNumeric(c("cornsilk", "darkblue"), LA_Asian$pct_Asian)
-
-Asian_map2 <- leaflet(LA_Asian) %>%
-  addProviderTiles("Stamen.TonerLite") %>%
-  addPolygons(stroke = FALSE, fillOpacity = 0.7,
-    color = ~LA_Asian_palette(pct_Asian)) %>%
-  addLegend("bottomright", pal = LA_Asian_palette, values = ~pct_Asian,
-    title = "Percent of population<br/>identifying as Asian alone",
-    labFormat = labelFormat(suffix = "%",
-                            transform = function(x) 100 * x),
-    opacity = 1)
-
-
-Asian_map2
-
-
-```
- 
-```{r, message = FALSE, warning = FALSE, echo = FALSE}
 
 Asian_map3 <- leaflet(LA_Asian) %>%
   addProviderTiles("Stamen.TonerLite") %>%
@@ -101,5 +70,4 @@ Asian_map3 <- leaflet(LA_Asian) %>%
 Asian_map3
 
 ```
- 
  
