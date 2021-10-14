@@ -1,5 +1,5 @@
 ---
-title: "Asian Pop in LA"
+title: "Assignment 6: Interactive maps (1 map)"
 author: "Katia Krotova"
 date: "10/13/2021"
 output: 
@@ -51,14 +51,11 @@ LA_Asian <- LA_Asian %>%
 
 ```
 
+ 
+ 
 ```{r, message = FALSE, warning = FALSE}
 
 LA_state_plane <- "+proj=aea +lat_1=34 +lat_2=40.5 +lat_0=0 +lon_0=-120 +x_0=0 +y_0=-4000000 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"
-
-```
- 
- 
-```{r, message = FALSE, warning = FALSE}
 
 LA_Asian_palette <- colorNumeric(c("cornsilk", "darkblue"), LA_Asian$pct_Asian)
 
